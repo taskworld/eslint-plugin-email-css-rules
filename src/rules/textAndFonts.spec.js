@@ -1,4 +1,3 @@
-// require('babel-eslint')
 const rule = require('../rules/textAndFonts')
 const RuleTester = require('eslint').RuleTester
 
@@ -19,7 +18,7 @@ ruleTester.run('text-and-font', rule, {
   invalid: [
     {
       code: '<div style={{ textShadow: "1px black" }}>foo</div>',
-      errors: [ { message: 'Style property text-shadow supplied to div is unsupported in Gmail.' } ]
+      errors: [ { message: 'Style property text-shadow supplied to div is unsupported in Gmail.' } ],
     },
   ]
 })
