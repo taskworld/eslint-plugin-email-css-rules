@@ -7,8 +7,6 @@ plugins:
   - import
 rules:
   no-console: warn
-  react/no-unused-prop-types: warn
-  react/prop-types: warn
   comma-dangle: off
 
   import/named: error
