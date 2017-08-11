@@ -1,20 +1,25 @@
+// require('babel-eslint')
 const rule = require('../rules/textAndFonts')
 const RuleTester = require('eslint').RuleTester
 
-const ruleTester = new RuleTester()
-ruleTester.run('custom-plugin-rule', rule, {
+const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 2017,
+    ecmaFeatures: {
+      jsx: true
+    }
+  }
+})
+
+ruleTester.run('text-and-font', rule, {
   valid: [
-    'var validVariable = true',
+    { code: '<div style={{ direction: "ltr" }}>foo</div>' },
   ],
 
   invalid: [
     {
-      code: 'var invalidVariable = true',
-      errors: [ { message: 'Unexpected invalid variable.' } ]
+      code: '<div style={{ textShadow: "1px black" }}>foo</div>',
+      errors: [ { message: 'Style property text-shadow supplied to div is unsupported in Gmail.' } ]
     },
-    {
-      code: 'var invalidVariable = true',
-      errors: [ { message: /^Unexpected.+variable/ } ]
-    }
   ]
 })
