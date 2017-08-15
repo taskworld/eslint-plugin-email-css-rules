@@ -17,22 +17,10 @@ ruleTester.run('text-and-font', rule, {
 
   invalid: [
     {
-      code: '<div style={{ textShadow: "1px black" }}>foo</div>',
-      errors: [
-        { message: '`text-shadow` supplied to `div` is unsupported in: outlook, outlook-legacy, gmail.' },
-      ],
-    },
-    {
-      code: '<div style={{ textOverflow: "ellipsis" }}>foo</div>',
-      error: [
-        { message: '`text-overflow` supplied to `div` is unsupported in: outlook-web, yahoo-mail, gmail.' }
-      ]
-    },
-    {
       code: '<div style={{ textOverflow: "ellipsis", textShadow: "1px black" }}>foo</div>',
-      error: [
-        { message: '`text-overflow`, `text-shadow` supplied to `div` is unsupported in: outlook-web, yahoo-mail, gmail, outlook, outlook-legacy.' }
-      ]
+      errors: [
+        { message: '`text-overflow, text-shadow` supplied to `div` is unsupported.' },
+      ],
     },
   ]
 })

@@ -1,17 +1,6 @@
-const { hasProp, getPropValue, elementType, getProp, propName } = require('jsx-ast-utils')
+const { hasProp, getPropValue, elementType, getProp } = require('jsx-ast-utils')
 const supportMatrix = require('../assets/supportMatrix.json')
 const _ = require('lodash')
-
-const platforms = [
-  'gmail',
-  'gmail-android',
-  'apple-mail',
-  'apple-ios',
-  'yahoo-mail',
-  'outlook',
-  'outlook-legacy',
-  'outlook-web',
-]
 
 module.exports = (context) => ({
   JSXOpeningElement: (node) => {
@@ -21,33 +10,20 @@ module.exports = (context) => ({
     const componentName = elementType(node)
     const styles = getPropValue(getProp(node.attributes, 'style'))
 
+    const unsupportedCSS = []
     for (const style in styles) {
-      const unsupported = []
-      const warningMessages = []
-      const propName = _.kebabCase(style)
-      const supportInfo = supportMatrix[propName]
-
-      for (const platform of platforms) {
-        // if (typeof supportInfo[platform] === 'string') {
-        //   warningMessages.push(platform)
-        // }
-        if (!supportInfo[platform]) {
-          unsupported.push(platform)
-        }
+      const css = _.kebabCase(style)
+      const supportPlatforms = supportMatrix[css]
+      const test = _.includes(supportPlatforms, false)
+      if (test) {
+        unsupportedCSS.push(css)
       }
-      // if (warningMessages.length > 0) {
-      //   context.report({
-      //     node,
-      //     message: `Warning: Style property \`${propName}\` supplied to \`${componentName}\`, in ${platforms.join(', ')}: ${msg.toLowerCase()}`
-      //   })
-      // }
-
-      if (unsupported.length > 0) {
-        context.report({
-          node,
-          message: `Style property \`${propName}\` supplied to \`${componentName}\` unsupported in: ${unsupported.join(', ')}.`
-        })
-      }
+    }
+    if (unsupportedCSS.length > 0) {
+      context.report({
+        node,
+        message: `\`${_.join(unsupportedCSS, ', ')}\` supplied to \`${componentName}\` is unsupported.`
+      })
     }
   },
 })
