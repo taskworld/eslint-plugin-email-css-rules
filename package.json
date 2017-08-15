@@ -7,7 +7,8 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "clean:coverage": "rm -rf coverage",
     "test:coverage": "jest --coverage",
-    "test": "npm run clean:coverage && npm run test:coverage"
+    "test:lint": "eslint src",
+    "test": "npm run clean:coverage && npm run test:coverage && npm run test:lint"
   },
   "repository": {
     "type": "git",
