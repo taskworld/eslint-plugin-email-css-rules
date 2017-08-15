@@ -19,10 +19,20 @@ ruleTester.run('text-and-font', rule, {
     {
       code: '<div style={{ textShadow: "1px black" }}>foo</div>',
       errors: [
-        { message: 'Style property `text-shadow` supplied to `div` unsupported in: gmail, outlook, outlook-legacy.' },
-        // { message: 'Style property `text-overflow` supplied to `div` unsupported in: outlook.' },
-
+        { message: '`text-shadow` supplied to `div` is unsupported in: outlook, outlook-legacy, gmail.' },
       ],
+    },
+    {
+      code: '<div style={{ textOverflow: "ellipsis" }}>foo</div>',
+      error: [
+        { message: '`text-overflow` supplied to `div` is unsupported in: outlook-web, yahoo-mail, gmail.' }
+      ]
+    },
+    {
+      code: '<div style={{ textOverflow: "ellipsis", textShadow: "1px black" }}>foo</div>',
+      error: [
+        { message: '`text-overflow`, `text-shadow` supplied to `div` is unsupported in: outlook-web, yahoo-mail, gmail, outlook, outlook-legacy.' }
+      ]
     },
   ]
 })

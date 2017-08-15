@@ -8,6 +8,7 @@
     "clean:coverage": "rm -rf coverage",
     "test:coverage": "jest --coverage",
     "test:lint": "eslint src",
+    "test:watch": "jest --watch",
     "test": "npm run clean:coverage && npm run test:coverage && npm run test:lint"
   },
   "repository": {
