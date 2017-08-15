@@ -1,20 +1,13 @@
 language: node_js
 node_js:
-  - 4
-  - 6
-  - 8
+  - 7
 os:
 - linux
 
 env:
-  - ESLINT_VERSION=2
-  - ESLINT_VERSION=3
   - ESLINT_VERSION=4
 
 install:
-  - if [ ${TRAVIS_NODE_VERSION} == "4" ]; then
-      npm install -g npm@3;
-    fi
   - npm install && npm install
   - npm install eslint@$ESLINT_VERSION --ignore-scripts || true
 
