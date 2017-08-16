@@ -27,18 +27,22 @@ module.exports = (context) => ({
       }
     }
     if (unsupportedCSS.length > 0) {
-      const thoseCss = _.join(unsupportedCSS, ', ')
-      const message = `\`${thoseCss}\` supplied to \`${componentName}\` is unsupported.`
-      context.report({
-        node,
-        message
-      })
+      report(unsupportedCSS, componentName, false, context, node)
     }
     if (unknowCss.length > 0 && hasStrict) {
-      context.report({
-        node,
-        message: `Unknown style property \`${_.join(unknowCss, ', ')}\` supplied to \`${componentName}\`.`
-      })
+      report(unknowCss, componentName, true, context, node)
     }
   },
 })
+
+function report (noticedCss = [], componentName, hasStrict, context, node) {
+  const thoseCss = _.join(noticedCss, ', ')
+  const message = (hasStrict)
+    ? `Unknown style property \`${thoseCss}\` supplied to \`${componentName}\`.`
+    : `\`${thoseCss}\` supplied to \`${componentName}\` is unsupported.`
+
+  context.report({
+    node,
+    message
+  })
+}
