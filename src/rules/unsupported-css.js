@@ -9,12 +9,17 @@ module.exports = (context) => ({
 
     const componentName = elementType(node)
     const styles = getPropValue(getProp(node.attributes, 'style'))
+    const hasStrict = context.options[0] === 'strict'
 
     const unsupportedCSS = []
+    const unknowCss = []
     for (const style in styles) {
       const css = _.kebabCase(style)
-      const supportPlatforms = supportMatrix[css]
-      const hasUnsupported = _.some(_.values(supportPlatforms), (v) => {
+      const platforms = supportMatrix[css]
+      if (hasStrict && _.isEmpty(platforms)) {
+        unknowCss.push(css)
+      }
+      const hasUnsupported = _.some(_.values(platforms), (v) => {
         return _.isString(v) || v === false
       })
       if (hasUnsupported) {
@@ -22,9 +27,17 @@ module.exports = (context) => ({
       }
     }
     if (unsupportedCSS.length > 0) {
+      const thoseCss = _.join(unsupportedCSS, ', ')
+      const message = `\`${thoseCss}\` supplied to \`${componentName}\` is unsupported.`
       context.report({
         node,
-        message: `\`${_.join(unsupportedCSS, ', ')}\` supplied to \`${componentName}\` is unsupported.`
+        message
+      })
+    }
+    if (unknowCss.length > 0 && hasStrict) {
+      context.report({
+        node,
+        message: `Unknown style property \`${_.join(unknowCss, ', ')}\` supplied to \`${componentName}\`.`
       })
     }
   },
