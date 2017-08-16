@@ -1,6 +1,5 @@
 module.exports = {
   rules: {
-    // 'selectors',
     'unsupported-css': require('./src/rules/unsupported-css'),
   },
   configs: {

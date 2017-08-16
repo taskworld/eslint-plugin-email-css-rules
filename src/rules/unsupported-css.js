@@ -14,8 +14,10 @@ module.exports = (context) => ({
     for (const style in styles) {
       const css = _.kebabCase(style)
       const supportPlatforms = supportMatrix[css]
-      const test = _.includes(supportPlatforms, false)
-      if (test) {
+      const hasUnsupported = _.some(_.values(supportPlatforms), (v) => {
+        return _.isString(v) || v === false
+      })
+      if (hasUnsupported) {
         unsupportedCSS.push(css)
       }
     }
