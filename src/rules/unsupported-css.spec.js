@@ -24,6 +24,15 @@ const vaildCases = [
       return (<div style={{ textAlign: "center" }}>fooooo</div>)
     }
   }` },
+  {
+    code: '<div style={{ width: "200px", padding: "1px 2px" }}>foo</div>',
+    options: [ '', [
+      'gmail',
+      'gmail-android',
+      'apple-mail',
+      'apple-ios',
+    ] ]
+  }
 ]
 
 const commonInvalidCases = [
@@ -55,12 +64,32 @@ const commonInvalidCases = [
       { message: '`text-shadow` supplied to `div` is unsupported.' },
     ],
   },
+  {
+    code: '<div style={{ width: "200px", padding: "1px 2px" }}>foo</div>',
+    options: [ '', [
+      'gmail',
+      'gmail-android',
+      'apple-mail',
+      'apple-ios',
+      'outlook',
+    ] ],
+    errors: [ { message: '`padding` supplied to `div` is unsupported.' } ],
+  }
 ]
 
 const unknowCssInvalidCases = [
   {
     code: '<div style={{ unknow: "black", barCss: "1px" }}>foo</div>',
-    options: [ 'strict' ],
+    options: [ 'strict', [
+      'gmail',
+      'gmail-android',
+      'apple-mail',
+      'apple-ios',
+      'yahoo-mail',
+      'outlook',
+      'outlook-legacy',
+      'outlook-web',
+    ] ],
     errors: [
       { message: 'Unknown style property `unknow, bar-css` supplied to `div`.' },
     ],

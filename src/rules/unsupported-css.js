@@ -10,12 +10,22 @@ module.exports = (context) => ({
     const componentName = elementType(node)
     const styles = getPropValue(getProp(node.attributes, 'style'))
     const hasStrict = context.options[0] === 'strict'
+    const configPlaforms = context.options[1] || [
+      'gmail',
+      'gmail-android',
+      'apple-mail',
+      'apple-ios',
+      'yahoo-mail',
+      'outlook',
+      'outlook-legacy',
+      'outlook-web',
+    ]
 
     const unsupportedCSS = []
     const unknowCss = []
     for (const style in styles) {
       const css = _.kebabCase(style)
-      const platforms = supportMatrix[css]
+      const platforms = _.pick(supportMatrix[css], configPlaforms)
       if (hasStrict && _.isEmpty(platforms)) {
         unknowCss.push(css)
       }

@@ -480,7 +480,7 @@
     "gmail-android": true
   },
   "width": {
-    "outlook": "Width for p and div tags is not supported",
+    "outlook": true,
     "outlook-legacy": true,
     "apple-ios": true,
     "outlook-web": true,
