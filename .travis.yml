@@ -1,0 +1,24 @@
+sudo: false
+
+language: node_js
+node_js:
+  - 7
+os:
+- linux
+
+cache:
+  directories:
+    - node_modules
+
+env:
+  - ESLINT_VERSION=4
+
+install:
+  - npm install && npm install
+  - npm install eslint@$ESLINT_VERSION --ignore-scripts || true
+
+script:
+  - "npm test"
+
+after_success:
+  - npm run coveralls
