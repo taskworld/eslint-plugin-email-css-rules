@@ -1,4 +1,4 @@
-const rule = require('../rules/textAndFonts')
+const rule = require('./unsupported-css')
 const RuleTester = require('eslint').RuleTester
 
 const ruleTester = new RuleTester({
@@ -10,7 +10,7 @@ const ruleTester = new RuleTester({
   }
 })
 
-ruleTester.run('text-and-font', rule, {
+ruleTester.run('unsupported-css', rule, {
   valid: [
     { code: '<div style={{ direction: "ltr", fontFamily: "Tahoma", fontSize: "14px" }}>foo</div>' },
   ],
