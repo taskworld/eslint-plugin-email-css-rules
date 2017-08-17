@@ -71,4 +71,5 @@ function isUnsupportedTag (node) {
 }
 
 function isBackgroundCssCondition (node) {
+
 }
