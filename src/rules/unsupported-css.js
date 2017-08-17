@@ -31,11 +31,19 @@ module.exports = (context) => ({
         continue
       }
       const hadBackgroundImage = hasBackgroundImage(node)
+      const hadEllipsis = hasTextOverflowEllipsisSupport(node, platforms)
       const hasUnsupported = _.some(_.values(platforms), (v) => {
-        return (isUnsupportedTag(node) || hadBackgroundImage || v === false)
+        return (
+          isUnsupportedTag(node) ||
+          hadBackgroundImage ||
+          hadEllipsis ||
+          v === false
+        )
       })
       if (hasUnsupported) {
-        const v = hadBackgroundImage ? 'background with image' : css
+        let v = css
+        if (hadBackgroundImage) v = 'background with image'
+        if (hadEllipsis) v = `text-overflow with ellipsis`
         unsupportedCSS.push(v)
       }
     }
@@ -67,7 +75,7 @@ function isUnsupportedTag (node) {
   const style = getPropValue(getProp(node.attributes, 'style'))
   if (_.indexOf(unsupportTags, el) === -1) return false
 
-  const intersection = _.intersection(_.keys(style), cssCases)
+  const intersection = _.intersection(_.kebabCase(_.keys(style)), cssCases)
   if (intersection.length === 0) return false
   return true
 }
@@ -79,6 +87,13 @@ function hasBackgroundImage (node) {
   return true
 }
 
-function hasTextOverflowValueSupport (node) {
+function hasTextOverflowEllipsisSupport (node, platforms) {
+  const unsupportEllipsisPlatforms = [ 'outlook-web', 'yahoo-mail', 'gmail' ]
+  const unsupportValue = 'ellipsis'
+  const textOverflowValue = _.get(getPropValue(getProp(node.attributes, 'style')), 'textOverflow', false)
 
+  if (!textOverflowValue) return false
+  if (textOverflowValue === unsupportValue) {
+    return _.intersection(_.uniq(_.keys(platforms)), unsupportEllipsisPlatforms).length > 0
+  }
 }

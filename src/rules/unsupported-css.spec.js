@@ -10,37 +10,31 @@ const ruleTester = new RuleTester({
   }
 })
 
+ruleTester.run('text overflow with outlook platform', rule, {
+  valid: [
+    { code: `<td style={{ textOverflow: 'clip' }}>OH BOOM!!</td>`,
+      options: ['strict', [ 'gmail' ]]
+    },
+  ],
+  invalid: [
+    { code: `<td style={{ textOverflow: 'clip' }}>OH BOOM!!</td>`,
+      options: ['strict', [ 'outlook', 'gmail', 'apple-ios' ]],
+      errors: ['`text-overflow` supplied to `td` is unsupported.']
+    }
+  ]
+})
+
 ruleTester.run('text overflow with ellipsis value', rule, {
   valid: [
-    { code: `<table>
-      <tr>
-        <td style={{ textOverflow: 'clip' }}>OH BOOM!!</td>
-        <td>MEOW!!</td>
-      </tr>
-      <tr>
-        <td>WAHHHHH!!</td>
-      </tr>
-    </table>`
-    },
-    { code: `<table>
-      <tr>
-        <td style={{ textOverflow: 'ellipsis' }}>OH BOOM!!</td>
-        <td>MEOW!!</td>
-      </tr>
-      <tr>
-        <td>WAHHHHH!!</td>
-      </tr>
-    </table>`,
+    { code: `<td style={{ textOverflow: 'clip' }}>OH BOOM!!</td>`,
       options: [ 'strict', [ 'apple-ios', 'apple-mail', 'gmail-android', 'apple-mail' ] ]
     },
   ],
   invalid: [
     {
-      code: '<table><tr><td style={{ textOverflow: "ellipsis" }}>EL DOT DOT DOT</td></tr></table>',
+      code: `<table><tr><td style={{ textOverflow: 'ellipsis' }}>EL DOT DOT DOT</td></tr></table>`,
       options: [ 'strict', [ 'outlook-web', 'yahoo-mail', 'gmail', 'outlook', 'gmail-android', 'apple-ios' ] ],
-      error: [
-        { message: '`text-overflow with ellipsis` supplied to `td` is unsupported.' }
-      ]
+      errors: [ '`text-overflow with ellipsis` supplied to `td` is unsupported.' ]
     }
   ]
 })
@@ -106,6 +100,17 @@ ruleTester.run('width and padding with p and div tags.', rule, {
         'outlook',
       ] ],
       errors: [ { message: '`width, padding` supplied to `div` is unsupported.' } ],
+    },
+    {
+      code: '<p style={{ width: "200px", paddingLeft: "2px" }}>foo</p>',
+      options: [ '', [
+        'gmail',
+        'gmail-android',
+        'apple-mail',
+        'apple-ios',
+        'outlook',
+      ] ],
+      errors: [ { message: '`width, padding-left` supplied to `p` is unsupported.' } ],
     }
   ]
 })
