@@ -34,7 +34,7 @@ module.exports = (context) => ({
       const hadEllipsis = hasTextOverflowEllipsisSupport(node, platforms)
       const hasUnsupported = _.some(_.values(platforms), (v) => {
         return (
-          isUnsupportedTag(node) ||
+          isUnsupportedTag(css, componentName) ||
           hadBackgroundImage ||
           hadEllipsis ||
           v === false
@@ -68,16 +68,11 @@ function report (noticedCss = [], componentName, hasStrict, context, node) {
   })
 }
 
-function isUnsupportedTag (node) {
+function isUnsupportedTag (css, componentName) {
   const unsupportTags = [ 'p', 'div' ]
   const cssCases = [ 'width', 'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left' ]
-  const el = elementType(node)
-  const style = getPropValue(getProp(node.attributes, 'style'))
-  if (_.indexOf(unsupportTags, el) === -1) return false
-
-  const intersection = _.intersection(_.kebabCase(_.keys(style)), cssCases)
-  if (intersection.length === 0) return false
-  return true
+  if (!_.includes(unsupportTags, componentName)) return false
+  return (_.includes(cssCases, css))
 }
 
 function hasBackgroundImage (node) {
