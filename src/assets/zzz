@@ -7,4 +7,4 @@ Inner and outer border are collapsed
 overflow: hidden; does not work
 position: fixed; does not result in elements being positioned relative to the reading pane
 
-word-wrap: normal; not supported
+word-wrap: normal; not supported /// working
