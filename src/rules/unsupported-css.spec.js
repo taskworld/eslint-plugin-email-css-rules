@@ -10,6 +10,41 @@ const ruleTester = new RuleTester({
   }
 })
 
+ruleTester.run('text overflow with ellipsis value', rule, {
+  valid: [
+    { code: `<table>
+      <tr>
+        <td style={{ textOverflow: 'clip' }}>OH BOOM!!</td>
+        <td>MEOW!!</td>
+      </tr>
+      <tr>
+        <td>WAHHHHH!!</td>
+      </tr>
+    </table>`
+    },
+    { code: `<table>
+      <tr>
+        <td style={{ textOverflow: 'ellipsis' }}>OH BOOM!!</td>
+        <td>MEOW!!</td>
+      </tr>
+      <tr>
+        <td>WAHHHHH!!</td>
+      </tr>
+    </table>`,
+      options: [ 'strict', [ 'apple-ios', 'apple-mail', 'gmail-android', 'apple-mail' ] ]
+    },
+  ],
+  invalid: [
+    {
+      code: '<table><tr><td style={{ textOverflow: "ellipsis" }}>EL DOT DOT DOT</td></tr></table>',
+      options: [ 'strict', [ 'outlook-web', 'yahoo-mail', 'gmail', 'outlook', 'gmail-android', 'apple-ios' ] ],
+      error: [
+        { message: '`text-overflow with ellipsis` supplied to `td` is unsupported.' }
+      ]
+    }
+  ]
+})
+
 ruleTester.run('background css', rule, {
   valid: [
     { code: '<div style={{ background: "black" }}>foo</div>' }
@@ -113,9 +148,9 @@ ruleTester.run('absolutely not support in all platforms.', rule, {
   ],
   invalid: [
     {
-      code: '<div style={{ textOverflow: "ellipsis", textShadow: "1px black" }}>foo</div>',
+      code: '<div style={{ textShadow: "1px black" }}>foo</div>',
       errors: [
-        { message: '`text-overflow, text-shadow` supplied to `div` is unsupported.' },
+        { message: '`text-shadow` supplied to `div` is unsupported.' },
       ],
     },
     {

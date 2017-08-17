@@ -78,3 +78,7 @@ function hasBackgroundImage (node) {
   if (backgroundCssValue.indexOf('url(') === -1) return false
   return true
 }
+
+function hasTextOverflowValueSupport (node) {
+
+}
