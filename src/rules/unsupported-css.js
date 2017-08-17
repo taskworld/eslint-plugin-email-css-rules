@@ -30,11 +30,13 @@ module.exports = (context) => ({
         unknowCss.push(css)
         continue
       }
+      const hadBackgroundImage = hasBackgroundImage(node)
       const hasUnsupported = _.some(_.values(platforms), (v) => {
-        return (isUnsupportedTag(node) || v === false)
+        return (isUnsupportedTag(node) || hadBackgroundImage || v === false)
       })
       if (hasUnsupported) {
-        unsupportedCSS.push(css)
+        const v = hadBackgroundImage ? 'background with image' : css
+        unsupportedCSS.push(v)
       }
     }
     if (unsupportedCSS.length > 0) {
@@ -70,6 +72,9 @@ function isUnsupportedTag (node) {
   return true
 }
 
-function isBackgroundCssCondition (node) {
-
+function hasBackgroundImage (node) {
+  const backgroundCssValue = _.get(getPropValue(getProp(node.attributes, 'style')), 'background', false)
+  if (!backgroundCssValue) return false
+  if (backgroundCssValue.indexOf('url(') === -1) return false
+  return true
 }
