@@ -11,30 +11,6 @@ const ruleTester = new RuleTester({
   }
 })
 
-const vaildCases = [
-  { code: '<div style={{ direction: "ltr", fontFamily: "Tahoma", fontSize: "14px" }}>foo</div>' },
-  { code: '<div style={{ textAlign: "center" }}>foo</div>' },
-  { code: `const MockModal = React.createClass({
-    render () {
-      return (<div style={{ textAlign: "center" }}>fooooo</div>)
-    }
-  })` },
-  { code: `class MockModal extends React.Component {
-    render () {
-      return (<div style={{ textAlign: "center" }}>fooooo</div>)
-    }
-  }` },
-  {
-    code: '<div style={{ width: "200px", padding: "1px 2px" }}>foo</div>',
-    options: [ '', [
-      'gmail',
-      'gmail-android',
-      'apple-mail',
-      'apple-ios',
-    ] ]
-  }
-]
-
 const commonInvalidCases = [
   {
     code: '<div style={{ textOverflow: "ellipsis", textShadow: "1px black" }}>foo</div>',
@@ -64,39 +40,95 @@ const commonInvalidCases = [
       { message: '`text-shadow` supplied to `div` is unsupported.' },
     ],
   },
-  {
-    code: '<div style={{ width: "200px", padding: "1px 2px" }}>foo</div>',
-    options: [ '', [
-      'gmail',
-      'gmail-android',
-      'apple-mail',
-      'apple-ios',
-      'outlook',
-    ] ],
-    errors: [ { message: '`padding` supplied to `div` is unsupported.' } ],
-  }
+
 ]
 
-const unknowCssInvalidCases = [
-  {
-    code: '<div style={{ unknow: "black", barCss: "1px" }}>foo</div>',
-    options: [ 'strict', [
-      'gmail',
-      'gmail-android',
-      'apple-mail',
-      'apple-ios',
-      'yahoo-mail',
-      'outlook',
-      'outlook-legacy',
-      'outlook-web',
-    ] ],
-    errors: [
-      { message: 'Unknown style property `unknow, bar-css` supplied to `div`.' },
-    ],
-  },
-]
+ruleTester.run('unsupported-with-warning-sentense', rule, {
+  valid: [
+    {
+      code: '<table style={{ width: "200px", padding: "1px 2px" }}>foo</table>',
+      options: [ '', [
+        'gmail',
+        'gmail-android',
+        'apple-mail',
+        'apple-ios',
+        'outlook'
+      ] ]
+    },
+    {
+      code: `class Mock extends React.Component {
+        render () {
+          return (
+            <div>
+              <table style={{ width: "600px" }}>
+                <tr>
+                  <td style={{ width: "330px", padding: "20px" }}>THIS IS WIDTH IN FIRST CELL, FIRST ROW.</td>
+                  <td style={{ width: "200px" }}>SECOND CELL</td>
+                </tr>
+              </table>
+            </div>
+          )
+        }
+      }`,
+      options: [ '', [
+        'gmail',
+        'gmail-android',
+        'apple-mail',
+        'apple-ios',
+        'outlook'
+      ] ]
+    },
+  ],
+  invalid: [
+    {
+      code: '<div style={{ width: "200px", padding: "1px 2px" }}>foo</div>',
+      options: [ '', [
+        'gmail',
+        'gmail-android',
+        'apple-mail',
+        'apple-ios',
+        'outlook',
+      ] ],
+      errors: [ { message: '`width, padding` supplied to `div` is unsupported.' } ],
+    }
+  ]
+})
+
+ruleTester.run('unknow-css', rule, {
+  valid: [
+    {
+      code: '<div style={{ borderRight: "20px" }}>foooo</div>',
+      options: [ 'strict' ],
+    }
+  ],
+  invalid: [
+    {
+      code: '<div style={{ unknow: "black", barCss: "1px" }}>foo</div>',
+      options: [ 'strict' ],
+      errors: [
+        { message: 'Unknown style property `unknow, bar-css` supplied to `div`.' },
+      ],
+    },
+  ]
+})
 
 ruleTester.run('unsupported-css', rule, {
-  valid: vaildCases,
-  invalid: _.concat(commonInvalidCases, unknowCssInvalidCases)
+  valid: [
+    { code: '<div style={{ direction: "ltr", fontFamily: "Tahoma", fontSize: "14px" }}>foo</div>' },
+    { code: `const MockModal = React.createClass({
+      render () {
+        return (
+          <div style={{ textAlign: "center" }}>
+            <table style={{ textAlign: "left" }}><tr><td>WHAOOO!!! THE LEFT</td></tr></table>
+          </div>
+        )
+      }
+    })` },
+    { code: `class MockModal extends React.Component {
+      render () {
+        return (<div style={{ textAlign: "center" }}>fooooo</div>)
+      }
+    }` },
+  ],
+  invalid: commonInvalidCases
 })

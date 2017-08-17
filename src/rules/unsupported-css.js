@@ -28,9 +28,10 @@ module.exports = (context) => ({
       const platforms = _.pick(supportMatrix[css], configPlaforms)
       if (hasStrict && _.isEmpty(platforms)) {
         unknowCss.push(css)
+        continue
       }
       const hasUnsupported = _.some(_.values(platforms), (v) => {
-        return _.isString(v) || v === false
+        return (isUnsupportedTag(node) || v === false)
       })
       if (hasUnsupported) {
         unsupportedCSS.push(css)
@@ -55,4 +56,19 @@ function report (noticedCss = [], componentName, hasStrict, context, node) {
     node,
     message
   })
+}
+
+function isUnsupportedTag (node) {
+  const unsupportTags = [ 'p', 'div' ]
+  const cssCases = [ 'width', 'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left' ]
+  const el = elementType(node)
+  const style = getPropValue(getProp(node.attributes, 'style'))
+  if (_.indexOf(unsupportTags, el) === -1) return false
+
+  const intersection = _.intersection(_.keys(style), cssCases)
+  if (intersection.length === 0) return false
+  return true
+}
+
+function isBackgroundCssCondition (node) {
 }
