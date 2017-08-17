@@ -6,6 +6,5 @@ Inner and outer border are collapsed
 
 overflow: hidden; does not work
 position: fixed; does not result in elements being positioned relative to the reading pane
-text-overflow: ellipsis; does not work
-text-overflow: ellipsis; does not work in Firefox
+
 word-wrap: normal; not supported

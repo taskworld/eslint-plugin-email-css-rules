@@ -17,7 +17,7 @@ ruleTester.run('text overflow with outlook platform', rule, {
     },
   ],
   invalid: [
-    { code: `<td style={{ textOverflow: 'clip' }}>OH BOOM!!</td>`,
+    { code: `<td style={{ textOverflow: 'clip', width: '200px' }}>OH BOOM!!</td>`,
       options: ['strict', [ 'outlook', 'gmail', 'apple-ios' ]],
       errors: ['`text-overflow` supplied to `td` is unsupported.']
     }

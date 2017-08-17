@@ -30,11 +30,11 @@ module.exports = (context) => ({
         unknowCss.push(css)
         continue
       }
-      const hadBackgroundImage = hasBackgroundImage(node)
-      const hadEllipsis = hasTextOverflowEllipsisSupport(node, platforms)
+      const hadBackgroundImage = hasBackgroundImageSupported(node)
+      const hadEllipsis = hasTextOverflowEllipsisSupported(node, platforms)
       const hasUnsupported = _.some(_.values(platforms), (v) => {
         return (
-          isUnsupportedTag(css, componentName) ||
+          isDefineSpaceStyleSupported(css, componentName) ||
           hadBackgroundImage ||
           hadEllipsis ||
           v === false
@@ -68,21 +68,21 @@ function report (noticedCss = [], componentName, hasStrict, context, node) {
   })
 }
 
-function isUnsupportedTag (css, componentName) {
+function isDefineSpaceStyleSupported (css, componentName) {
   const unsupportTags = [ 'p', 'div' ]
   const cssCases = [ 'width', 'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left' ]
   if (!_.includes(unsupportTags, componentName)) return false
   return (_.includes(cssCases, css))
 }
 
-function hasBackgroundImage (node) {
+function hasBackgroundImageSupported (node) {
   const backgroundCssValue = _.get(getPropValue(getProp(node.attributes, 'style')), 'background', false)
   if (!backgroundCssValue) return false
   if (backgroundCssValue.indexOf('url(') === -1) return false
   return true
 }
 
-function hasTextOverflowEllipsisSupport (node, platforms) {
+function hasTextOverflowEllipsisSupported (node, platforms) {
   const unsupportEllipsisPlatforms = [ 'outlook-web', 'yahoo-mail', 'gmail' ]
   const unsupportValue = 'ellipsis'
   const textOverflowValue = _.get(getPropValue(getProp(node.attributes, 'style')), 'textOverflow', false)
