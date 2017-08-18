@@ -1,0 +1,10 @@
+line-height on td is ignored, use on p instead.
+
+IE: Yes. Otherwise, inline text field with scrollbar displays, but no resize tab
+Image not stretched
+Inner and outer border are collapsed
+
+overflow: hidden; does not work
+position: fixed; does not result in elements being positioned relative to the reading pane
+
+word-wrap: normal; not supported /// working
