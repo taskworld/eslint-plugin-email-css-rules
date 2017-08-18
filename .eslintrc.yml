@@ -10,8 +10,10 @@ env:
 parser: babel-eslint
 extends:
   - standard
+  - plugin:lodash/recommended
 plugins:
   - import
+  - lodash
 globals:
   expect: false
 rules:
@@ -20,3 +22,5 @@ rules:
 
   import/named: error
   import/namespace: error
+
+  lodash/import-scope: off

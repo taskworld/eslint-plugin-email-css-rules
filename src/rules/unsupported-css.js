@@ -2,14 +2,18 @@ const { hasProp, getPropValue, elementType, getProp } = require('jsx-ast-utils')
 const supportMatrix = require('../assets/supportMatrix.json')
 const _ = require('lodash')
 
+const extractStyle = (node, ...args) => getPropValue(getProp(node.attributes, 'style'), ...args)
+
 module.exports = (context) => ({
   JSXOpeningElement: (node) => {
     const hasStyle = hasProp(node.attributes, 'style')
     if (!hasStyle) return
 
     const componentName = elementType(node)
-    const styles = getPropValue(getProp(node.attributes, 'style'))
+    const styles = extractStyle(node)
     const hasStrict = context.options[0] === 'strict'
+    const unsupportedCSS = []
+    const unknowCss = []
     const configPlaforms = context.options[1] || [
       'gmail',
       'gmail-android',
@@ -21,8 +25,6 @@ module.exports = (context) => ({
       'outlook-web',
     ]
 
-    const unsupportedCSS = []
-    const unknowCss = []
     for (const style in styles) {
       const css = _.kebabCase(style)
       const platforms = _.pick(supportMatrix[css], configPlaforms)
@@ -41,16 +43,16 @@ module.exports = (context) => ({
         )
       })
       if (hasUnsupported) {
-        let v = css
-        if (hadBackgroundImage) v = 'background with image'
-        if (hadEllipsis) v = `text-overflow with ellipsis`
-        unsupportedCSS.push(v)
+        let noticeCss = css
+        if (hadBackgroundImage) noticeCss = 'background with image'
+        if (hadEllipsis) noticeCss = `text-overflow with ellipsis`
+        unsupportedCSS.push(noticeCss)
       }
     }
-    if (unsupportedCSS.length > 0) {
+    if (!_.isEmpty(unsupportedCSS)) {
       report(unsupportedCSS, componentName, false, context, node)
     }
-    if (unknowCss.length > 0 && hasStrict) {
+    if (!_.isEmpty(unknowCss) > 0 && hasStrict) {
       report(unknowCss, componentName, true, context, node)
     }
   },
@@ -76,16 +78,16 @@ function isDefineSpaceStyleSupported (css, componentName) {
 }
 
 function hasBackgroundImageSupported (node) {
-  const backgroundCssValue = _.get(getPropValue(getProp(node.attributes, 'style')), 'background', false)
+  const backgroundCssValue = _.get(extractStyle(node), 'background', false)
   if (!backgroundCssValue) return false
-  if (backgroundCssValue.indexOf('url(') === -1) return false
+  if (!_.includes(backgroundCssValue, 'url(')) return false
   return true
 }
 
 function hasTextOverflowEllipsisSupported (node, platforms) {
   const unsupportEllipsisPlatforms = [ 'outlook-web', 'yahoo-mail', 'gmail' ]
   const unsupportValue = 'ellipsis'
-  const textOverflowValue = _.get(getPropValue(getProp(node.attributes, 'style')), 'textOverflow', false)
+  const textOverflowValue = _.get(extractStyle(node), 'textOverflow', false)
 
   if (!textOverflowValue) return false
   if (textOverflowValue === unsupportValue) {
