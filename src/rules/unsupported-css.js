@@ -1,8 +1,8 @@
-const { hasProp, getPropValue, elementType, getProp } = require('jsx-ast-utils')
+const { hasProp, elementType } = require('jsx-ast-utils')
 const supportMatrix = require('../assets/supportMatrix.json')
 const _ = require('lodash')
-
-const extractStyle = (node, ...args) => getPropValue(getProp(node.attributes, 'style'), ...args)
+const extractStyle = require('../utils/extractStyle')
+const report = require('../utils/report')
 
 module.exports = (context) => ({
   JSXOpeningElement: (node) => {
@@ -57,18 +57,6 @@ module.exports = (context) => ({
     }
   },
 })
-
-function report (noticedCss = [], componentName, hasStrict, context, node) {
-  const thoseCss = _.join(noticedCss, ', ')
-  const message = (hasStrict)
-    ? `Unknown style property \`${thoseCss}\` supplied to \`${componentName}\`.`
-    : `\`${thoseCss}\` supplied to \`${componentName}\` is unsupported.`
-
-  context.report({
-    node,
-    message
-  })
-}
 
 function isDefineSpaceStyleSupported (css, componentName) {
   const unsupportTags = [ 'p', 'div' ]
