@@ -1,8 +1,19 @@
-const { hasProp, getPropValue, elementType, getProp } = require('jsx-ast-utils')
-const supportMatrix = require('../assets/supportMatrix.json')
-const _ = require('lodash')
+const hasProp = require('jsx-ast-utils/hasProp')
+const elementType = require('jsx-ast-utils/elementType')
+const kebabCase = require('lodash/kebabCase')
+const pick = require('lodash/pick')
+const isEmpty = require('lodash/isEmpty')
+const some = require('lodash/some')
+const values = require('lodash/values')
+const includes = require('lodash/includes')
+const get = require('lodash/get')
+const intersection = require('lodash/intersection')
+const uniq = require('lodash/uniq')
+const keys = require('lodash/keys')
 
-const extractStyle = (node, ...args) => getPropValue(getProp(node.attributes, 'style'), ...args)
+const supportMatrix = require('../assets/supportMatrix.json')
+const extractStyle = require('../utils/extractStyle')
+const report = require('../utils/report')
 
 module.exports = (context) => ({
   JSXOpeningElement: (node) => {
@@ -26,15 +37,15 @@ module.exports = (context) => ({
     ]
 
     for (const style in styles) {
-      const css = _.kebabCase(style)
-      const platforms = _.pick(supportMatrix[css], configPlaforms)
-      if (hasStrict && _.isEmpty(platforms)) {
+      const css = kebabCase(style)
+      const platforms = pick(supportMatrix[css], configPlaforms)
+      if (hasStrict && isEmpty(platforms)) {
         unknowCss.push(css)
         continue
       }
       const hadBackgroundImage = hasBackgroundImageSupported(node)
       const hadEllipsis = hasTextOverflowEllipsisSupported(node, platforms)
-      const hasUnsupported = _.some(_.values(platforms), (v) => {
+      const hasUnsupported = some(values(platforms), (v) => {
         return (
           isDefineSpaceStyleSupported(css, componentName) ||
           hadBackgroundImage ||
@@ -49,48 +60,36 @@ module.exports = (context) => ({
         unsupportedCSS.push(noticeCss)
       }
     }
-    if (!_.isEmpty(unsupportedCSS)) {
+    if (!isEmpty(unsupportedCSS)) {
       report(unsupportedCSS, componentName, false, context, node)
     }
-    if (!_.isEmpty(unknowCss) > 0 && hasStrict) {
+    if (!isEmpty(unknowCss) > 0 && hasStrict) {
       report(unknowCss, componentName, true, context, node)
     }
   },
 })
 
-function report (noticedCss = [], componentName, hasStrict, context, node) {
-  const thoseCss = _.join(noticedCss, ', ')
-  const message = (hasStrict)
-    ? `Unknown style property \`${thoseCss}\` supplied to \`${componentName}\`.`
-    : `\`${thoseCss}\` supplied to \`${componentName}\` is unsupported.`
-
-  context.report({
-    node,
-    message
-  })
-}
-
 function isDefineSpaceStyleSupported (css, componentName) {
   const unsupportTags = [ 'p', 'div' ]
   const cssCases = [ 'width', 'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left' ]
-  if (!_.includes(unsupportTags, componentName)) return false
-  return (_.includes(cssCases, css))
+  if (!includes(unsupportTags, componentName)) return false
+  return (includes(cssCases, css))
 }
 
 function hasBackgroundImageSupported (node) {
-  const backgroundCssValue = _.get(extractStyle(node), 'background', false)
+  const backgroundCssValue = get(extractStyle(node), 'background', false)
   if (!backgroundCssValue) return false
-  if (!_.includes(backgroundCssValue, 'url(')) return false
+  if (!includes(backgroundCssValue, 'url(')) return false
   return true
 }
 
 function hasTextOverflowEllipsisSupported (node, platforms) {
   const unsupportEllipsisPlatforms = [ 'outlook-web', 'yahoo-mail', 'gmail' ]
   const unsupportValue = 'ellipsis'
-  const textOverflowValue = _.get(extractStyle(node), 'textOverflow', false)
+  const textOverflowValue = get(extractStyle(node), 'textOverflow', false)
 
   if (!textOverflowValue) return false
   if (textOverflowValue === unsupportValue) {
-    return _.intersection(_.uniq(_.keys(platforms)), unsupportEllipsisPlatforms).length > 0
+    return intersection(uniq(keys(platforms)), unsupportEllipsisPlatforms).length > 0
   }
 }
