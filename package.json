@@ -1,6 +1,6 @@
 {
-  "name": "eslint-email-template",
-  "version": "1.0.0",
+  "name": "eeslint-plugin-email-css-rules",
+  "version": "2.0.0",
   "description": "linter rules",
   "main": "index.js",
   "scripts": {
@@ -18,14 +18,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/taskworld/eslint-plugin-taskworld.git"
+    "url": "git+https://github.com/taskworld/eslint-plugin-email-css-rules.git"
   },
   "author": "Kawin Glomjai <kawin.g@taskworld.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/taskworld/eslint-plugin-taskworld/issues"
+    "url": "https://github.com/taskworld/eslint-plugin-email-css-rules/issues"
   },
-  "homepage": "https://github.com/taskworld/eslint-plugin-taskworld#readme",
+  "homepage": "https://github.com/taskworld/eslint-plugin-email-css-rules#readme",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "coveralls": "^2.13.1",
