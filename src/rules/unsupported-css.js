@@ -1,4 +1,4 @@
-const hasProp = require('jsx-ast-utils/hasProp')
+
 const elementType = require('jsx-ast-utils/elementType')
 const kebabCase = require('lodash/kebabCase')
 const pick = require('lodash/pick')
@@ -14,11 +14,11 @@ const keys = require('lodash/keys')
 const supportMatrix = require('../assets/supportMatrix.json')
 const extractStyle = require('../utils/extractStyle')
 const report = require('../utils/report')
+const hasPropStyle = require('../utils/hasPropStyle')
 
 module.exports = (context) => ({
   JSXOpeningElement: (node) => {
-    const hasStyle = hasProp(node.attributes, 'style')
-    if (!hasStyle) return
+    if (!hasPropStyle(node)) return
 
     const componentName = elementType(node)
     const styles = extractStyle(node)
