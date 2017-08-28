@@ -18,14 +18,14 @@
  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/taskworld/eslint-email-template.git"
+    "url": "git+https://github.com/taskworld/eslint-plugin-taskworld.git"
   },
   "author": "Kawin Glomjai <kawin.g@taskworld.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/taskworld/eslint-email-template/issues"
+    "url": "https://github.com/taskworld/eslint-plugin-taskworld/issues"
   },
-  "homepage": "https://github.com/taskworld/eslint-email-template#readme",
+  "homepage": "https://github.com/taskworld/eslint-plugin-taskworld#readme",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "coveralls": "^2.13.1",
