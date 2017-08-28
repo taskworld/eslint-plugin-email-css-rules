@@ -11,6 +11,11 @@
     "test:watch": "jest --watch",
     "test": "npm run clean:coverage && npm run test:coverage && npm run test:lint"
   },
+  "keywords": [
+   "eslint",
+   "eslintplugin",
+   "eslint-plugin"
+ ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/taskworld/eslint-email-template.git"
