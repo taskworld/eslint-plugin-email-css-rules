@@ -1,4 +1,4 @@
-const rule = require('./unsupported-css')
+const rule = require('../../../lib/rules/unsupported-css')
 const RuleTester = require('eslint').RuleTester
 
 const ruleTester = new RuleTester({
@@ -36,20 +36,6 @@ ruleTester.run('text overflow with ellipsis value', rule, {
       options: [ 'strict', [ 'outlook-web', 'yahoo-mail', 'gmail', 'outlook', 'gmail-android', 'apple-ios' ] ],
       errors: [ '`text-overflow with ellipsis` supplied to `td` is unsupported.' ]
     }
-  ]
-})
-
-ruleTester.run('background css', rule, {
-  valid: [
-    { code: '<div style={{ background: "black" }}>foo</div>' }
-  ],
-  invalid: [
-    {
-      code: '<div style={{ background: "url(https://www.w3schools.com/css/gradient_bg.png)" }}>foo</div>',
-      errors: [
-        { message: '`background with image` supplied to `div` is unsupported.' },
-      ],
-    },
   ]
 })
 

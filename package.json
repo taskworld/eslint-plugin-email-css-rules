@@ -1,8 +1,8 @@
 {
   "name": "eslint-plugin-email-css-rules",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "linter rules",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "clean:coverage": "rm -rf coverage",
@@ -39,10 +39,11 @@
     "jest": "^20.0.4"
   },
   "dependencies": {
+    "requireindex": "~1.1.0",
     "jsx-ast-utils": "^2.0.0",
     "lodash": "^4.17.4"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=4.10.0"
   }
 }
