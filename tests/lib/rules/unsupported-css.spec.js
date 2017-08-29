@@ -1,4 +1,4 @@
-const rule = require('./unsupported-css')
+const rule = require('../../../lib/rules/unsupported-css')
 const RuleTester = require('eslint').RuleTester
 
 const ruleTester = new RuleTester({
