@@ -42,7 +42,7 @@ If it is not already the case you must also configure `ESLint` to support JSX.
 
 # Special Thank
 
- Thanks for all reference data from [react-html-email](https://github.com/chromakode/react-html-email) to composed those datas to JSON.
+ Thanks for all reference data from [react-html-email](https://github.com/chromakode/react-html-email) to composed those datas to JSON. And ValidatorCssStyle inspration.
 
  Huge thank from resource from [The Untimate Guide to CSS](https://www.campaignmonitor.com/css/) to collect the css breakdown in every platforms.
 
