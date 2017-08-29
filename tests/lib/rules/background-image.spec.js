@@ -14,6 +14,7 @@ ruleTester.run('background css', rule, {
   valid: [
     { code: '<div style={{ background: "black", textAlign: "center" }}>foo</div>' },
     { code: '<table><tr style={{ background: "transparent" }}>foo</tr></table>' },
+    { code: '<Container style={{ height: "52px", width: 0 }}>' },
   ],
   invalid: [
     {
