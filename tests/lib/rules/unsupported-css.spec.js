@@ -101,24 +101,6 @@ ruleTester.run('width and padding with p and div tags.', rule, {
   ]
 })
 
-ruleTester.run('unknow css', rule, {
-  valid: [
-    {
-      code: '<div style={{ borderRight: "20px" }}>foooo</div>',
-      options: [ 'strict' ],
-    }
-  ],
-  invalid: [
-    {
-      code: '<div style={{ unknow: "black", barCss: "1px" }}>foo</div>',
-      options: [ 'strict' ],
-      errors: [
-        { message: 'Unknown style property `unknow, bar-css` supplied to `div`.' },
-      ],
-    },
-  ]
-})
-
 ruleTester.run('absolutely not support in all platforms.', rule, {
   valid: [
     { code: '<div style={{ direction: "ltr", fontFamily: "Tahoma", fontSize: "14px" }}>foo</div>' },
