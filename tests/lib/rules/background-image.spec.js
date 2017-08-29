@@ -12,13 +12,14 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('background css', rule, {
   valid: [
-    { code: '<div style={{ background: "black", textAlign: "center" }}>foo</div>' }
+    { code: '<div style={{ background: "black", textAlign: "center" }}>foo</div>' },
+    { code: '<table><tr style={{ background: "transparent" }}>foo</tr></table>' },
   ],
   invalid: [
     {
       code: '<div style={{ background: "url(https://www.w3schools.com/css/gradient_bg.png)", textAlign: "center" }}>foo</div>',
       errors: [
-        { message: '`background with image` supplied to `div` is unsupported.' },
+        { message: '`background with image url` supplied to `div`, in outlook,outlook-web: background images not supported.' },
       ],
     },
   ]
