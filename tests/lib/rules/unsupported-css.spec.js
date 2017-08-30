@@ -15,6 +15,7 @@ ruleTester.run('text overflow with outlook platform', rule, {
     { code: `<td style={{ textOverflow: 'clip' }}>OH BOOM!!</td>`,
       options: ['strict', [ 'gmail' ]]
     },
+    { code: '<UserRow style={style.userRow}>foooo</UserRow>' },
   ],
   invalid: [
     { code: `<td style={{ textOverflow: 'clip', width: '200px' }}>OH BOOM!!</td>`,

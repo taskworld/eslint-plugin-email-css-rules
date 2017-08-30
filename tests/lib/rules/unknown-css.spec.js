@@ -12,17 +12,21 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('unknow css', rule, {
   valid: [
-    {
-      code: '<div style={{ borderRight: "20px" }}>foooo</div>',
-      options: [ 'strict' ],
-    }
+    { code: '<div style={{ borderRight: "20px" }}>foooo</div>' },
+    { code: '<UserRow style={{ borderRight: "20px" }}>foooo</UserRow>' },
+    { code: '<UserRow style={style.userRow}>foooo</UserRow>' },
   ],
   invalid: [
     {
       code: '<div style={{ unknowCSS: "black", barCss: "1px", borderRight: "20px" }}>foo</div>',
-      options: [ 'strict' ],
       errors: [
         { message: 'Unknown style property `unknow-css, bar-css` supplied to `div`.' },
+      ],
+    },
+    {
+      code: '<UserRow style={{ borderRight: "20px", kakaNana: "20px" }}>foooo</UserRow>',
+      errors: [
+        { message: 'Unknown style property `kaka-nana` supplied to `UserRow`.' },
       ],
     },
   ]
