@@ -15,7 +15,6 @@ ruleTester.run('text overflow with outlook platform', rule, {
     { code: `<td style={{ textOverflow: 'clip' }}>OH BOOM!!</td>`,
       options: ['strict', [ 'gmail' ]]
     },
-    { code: '<UserRow style={style.userRow}>foooo</UserRow>' },
   ],
   invalid: [
     { code: `<td style={{ textOverflow: 'clip', width: '200px' }}>OH BOOM!!</td>`,
@@ -36,68 +35,6 @@ ruleTester.run('text overflow with ellipsis value', rule, {
       code: `<table><tr><td style={{ textOverflow: 'ellipsis' }}>EL DOT DOT DOT</td></tr></table>`,
       options: [ 'strict', [ 'outlook-web', 'yahoo-mail', 'gmail', 'outlook', 'gmail-android', 'apple-ios' ] ],
       errors: [ '`text-overflow with ellipsis` supplied to `td` is unsupported.' ]
-    }
-  ]
-})
-
-ruleTester.run('width and padding with p and div tags.', rule, {
-  valid: [
-    {
-      code: '<table style={{ width: "200px", padding: "1px 2px" }}>foo</table>',
-      options: [ '', [
-        'gmail',
-        'gmail-android',
-        'apple-mail',
-        'apple-ios',
-        'outlook'
-      ] ]
-    },
-    {
-      code: `class Mock extends React.Component {
-        render () {
-          return (
-            <div>
-              <table style={{ width: "600px" }}>
-                <tr>
-                  <td style={{ width: "330px", padding: "20px" }}>THIS IS WIDTH IN FIRST CELL, FIRST ROW.</td>
-                  <td style={{ width: "200px" }}>SECOND CELL</td>
-                </tr>
-              </table>
-            </div>
-          )
-        }
-      }`,
-      options: [ '', [
-        'gmail',
-        'gmail-android',
-        'apple-mail',
-        'apple-ios',
-        'outlook'
-      ] ]
-    },
-  ],
-  invalid: [
-    {
-      code: '<div style={{ width: "200px", padding: "1px 2px" }}>foo</div>',
-      options: [ '', [
-        'gmail',
-        'gmail-android',
-        'apple-mail',
-        'apple-ios',
-        'outlook',
-      ] ],
-      errors: [ { message: '`width, padding` supplied to `div` is unsupported.' } ],
-    },
-    {
-      code: '<p style={{ width: "200px", paddingLeft: "2px" }}>foo</p>',
-      options: [ '', [
-        'gmail',
-        'gmail-android',
-        'apple-mail',
-        'apple-ios',
-        'outlook',
-      ] ],
-      errors: [ { message: '`width, padding-left` supplied to `p` is unsupported.' } ],
     }
   ]
 })
