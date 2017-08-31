@@ -42,6 +42,7 @@ ruleTester.run('text overflow with ellipsis value', rule, {
 ruleTester.run('absolutely not support in all platforms.', rule, {
   valid: [
     { code: '<div style={{ direction: "ltr", fontFamily: "Tahoma", fontSize: "14px" }}>foo</div>' },
+    { code: '<UserRow style={style.userRow}>foo</UserRow>' },
     { code: `const MockModal = React.createClass({
       render () {
         return (
