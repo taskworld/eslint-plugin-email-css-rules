@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-email-css-rules",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "linter rules",
   "main": "lib/index.js",
   "scripts": {
