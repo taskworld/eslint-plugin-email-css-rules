@@ -17,6 +17,7 @@ ruleTester.run('width and padding with p and div tags.', rule, {
     },
     { code: '<UserRow style={{ width: "250px", height: "30px", paddingLeft: "20px" }} data={data.rows} />' },
     { code: '<UserRow style={style.userRow} data={data.rows} />' },
+    { code: '<UserRow data={this.props.dataType}>foooo</UserRow>' },
     {
       code: `class Mock extends React.Component {
         render () {

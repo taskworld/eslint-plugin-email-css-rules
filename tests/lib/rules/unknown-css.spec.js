@@ -15,6 +15,7 @@ ruleTester.run('unknow css', rule, {
     { code: '<div style={{ borderRight: "20px" }}>foooo</div>' },
     { code: '<UserRow style={{ borderRight: "20px" }}>foooo</UserRow>' },
     { code: '<UserRow style={style.userRow}>foooo</UserRow>' },
+    { code: '<UserRow data={this.props.dataType}>foooo</UserRow>' },
   ],
   invalid: [
     {

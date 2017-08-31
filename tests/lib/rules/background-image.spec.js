@@ -15,6 +15,7 @@ ruleTester.run('background css', rule, {
     { code: '<div style={{ background: "black", textAlign: "center" }}>foo</div>' },
     { code: '<table><tr style={{ background: "transparent" }}>foo</tr></table>' },
     { code: '<table><tr style={style.foo}>foo</tr></table>' },
+    { code: '<UserRow data={this.props.dataType}>foooo</UserRow>' },
   ],
   invalid: [
     {
