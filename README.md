@@ -39,6 +39,17 @@ If it is not already the case you must also configure `ESLint` to support JSX.
   }
 }
 ```
+# Avaiable rules
+- email-css-rules/unsupported-css
+- email-css-rules/background-image
+- email-css-rules/defined-space
+
+### unsupported-css
+ Basically to detected unsupport or mal-css string in React code.
+### background-image
+ background style doesn't support url image in some email platforms.
+### defined-space
+ width and padding to make a space between element in your visualize component. Some email platforms doesn't support that.
 
 # Special Thank
 
